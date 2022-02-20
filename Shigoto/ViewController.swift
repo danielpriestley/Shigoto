@@ -17,20 +17,25 @@ class ViewController: UIViewController {
     
     var pomodoro = 2700
     var timer = Timer()
+    var isPaused = true
     
     @IBOutlet weak var timerText: UILabel!
     @IBOutlet weak var startButtonText: UIButton!
     
-    
-    
-    
-    
     @IBAction func startTimerButton(_ sender: UIButton) {
         
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-        
-        startButtonText.titleLabel!.text = "Pause"
-        
+        if startButtonText.title(for: .normal) == "Start" {
+            // When the button is first pressed, it should change the title to Pause
+            startButtonText.setTitle("Pause", for: .normal)
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+            isPaused = false
+        } else {
+            // When the button runs for a second time, this code will fire as title was set to Pause above
+            timer.invalidate()
+            isPaused = true
+            startButtonText.setTitle("Start", for: .normal)
+        }
+
     }
     
     @IBAction func cancelTimerButton(_ sender: UIButton) {
@@ -38,7 +43,7 @@ class ViewController: UIViewController {
         timerText.text = "45:00"
         pomodoro = 2700
         
-        startButtonText.titleLabel!.text = "Start"
+        startButtonText.setTitle("Start", for: .normal)
         
     }
     
@@ -61,7 +66,7 @@ class ViewController: UIViewController {
             timerText.text = "Done!"
         }
     }
-
-
+    
+    
 }
 
